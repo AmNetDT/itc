@@ -574,7 +574,6 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.btn_regis_01', function() {
-        $("#loader_httpFeed").show();
         userRegistration();
         return false;
     })
@@ -612,6 +611,7 @@ $(document).ready(function() {
 
     let editProcessReg = () => {
         $("#loader_httpFeed").show();
+    
         $.ajax({
             type: "POST",
             url: "filesmanagers/users/editserver.php",
@@ -693,11 +693,15 @@ $(document).ready(function() {
 
     $(document).on('click', '#logB', function() {
 
+         $("#loaders").show();
         let usrs = $(".login_userName").val();
         let paswd = $(".login_userPass").val();
+
         if (usrs === "") {
+            $("#loaders").hide();
             dalert.alert('Please enter username');
         } else if (paswd === "") {
+            $("#loaders").hide();
             dalert.alert('Please enter username');
         } else {
 
@@ -714,15 +718,16 @@ $(document).ready(function() {
                 dataType: "json",
                 cache: false,
                 success: function(msg) {
-                    if (msg.status === "400") {
+                    if(msg.status=='400'){
                         dalert.alert(msg.msg);
-                    } else {
+                    }else{
                         location.href = msg.url;
                     }
+                    $("#loaders").hide();
                 },
                 error: function(xhr) {
                     if (xhr.status == 404) {
-                        $("#loader_httpFeed").hide();
+                        $("#loaders").hide();
                         dalert.alert("internet connection working");
                     } else {
                         $("#loader_httpFeed").hide();

@@ -15,7 +15,7 @@
     $stmt->execute(array($users,$pass));
     $row = $stmt->fetch();
 
-    if($row['counts'] =='' && $row['counts']==null) {
+    if($row['id'] =="") {
         $json =array(
             "status"=>400,
             "msg"=>"Please enter valid user login credential"

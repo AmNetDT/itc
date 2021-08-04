@@ -216,16 +216,19 @@ select a.id, a.staffcode as ecode, a.fullname, b.name as depots,
 
 	public static function regUsers(){
 		$init = "
-		insert into employees (first_name,middle_name,last_name,sex,phone_no,email,phone_fa_code,bike_fa_code,phone_imei,device_brands_id,
-		customer_code,employee_code,depots_id,vehicle_id,division_id,region_id,area_id,company_id,syscategory_id,username,password,
-		depots_waiver, imei_waiver,entry_date) 
-		values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		INSERT INTO users(
+	fullname, sex, phoneno, email, username, password, phone_fa_code, bike_fa_code, phone_imei, staffcode, 
+	region_id, state_id, lga_id, area_id, distribution_channel_id, depot_id, company_id, users_status, 
+	system_category_id, device_brand_id, depot_waiver, entry_date)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		return $init; 
 	}
 
 	public static function userLoginAuth() {
 		$init = " 
-		select id, count(id) as counts from users where username = ? and password = ? group by id";
+		select id, count(id) as counts from users where username = ? and password = ? 
+		and system_category_id in(1, 3, 4)
+		group by id";
 		return $init; 
 	}
 
@@ -261,10 +264,16 @@ select a.id, a.staffcode as ecode, a.fullname, b.name as depots,
 		return $init;
 	}
 
+	public static function getArea()
+	{
+		$init = " 
+		select id, name from area where lga_id = ? ";
+		return $init;
+	}
+
 	public static function usersEditableInfo() {
 		$init = " 
-				
-select fullname, sex, phoneno as phone_no, email, phone_fa_code, bike_fa_code, phone_imei,
+		select fullname, sex, phoneno as phone_no, email, phone_fa_code, bike_fa_code, phone_imei,
 		device_brand_id as device_brands_id, '' as customer_code, staffcode as employee_code, 
 		depot_id as depots_id,distribution_channel_id as vehicle_id, region_id, area_id, 
 		system_category_id as syscategory_id, username, password, depot_waiver as depots_waiver, 
@@ -275,13 +284,11 @@ select fullname, sex, phoneno as phone_no, email, phone_fa_code, bike_fa_code, p
 
 
 	public static function usersInfoUpdates() {
-		$init = " 
-		update users set 
-		first_name = ?, middle_name = ?, last_name = ?, sex = ?,  phone_no = ?, email = ?, 
-		phone_fa_code = ?, bike_fa_code = ?, phone_imei = ?,
-		device_brands_id = ?, customer_code = ?, employee_code = ?,
-		depots_id = ?,vehicle_id = ?, region_id = ?, area_id = ?, syscategory_id = ?, password = ?, depots_waiver = ?, activate = ?
-		where id = ?";
+		$init = " UPDATE users SET fullname = ?, staffcode=?, sex=?,
+		phoneno=?, email=?, region_id=?, state_id=?, lga_id=?, area_id=?, depot_id=?, distribution_channel_id=?,  
+		company_id=?, phone_fa_code=?, bike_fa_code=?, phone_imei=?, device_brand_id=?, system_category_id=?, 
+		username=?, password=?, depot_waiver=?, users_status=?
+		WHERE id = ?";
 		return $init; 
 	}
 

@@ -4,6 +4,8 @@ ini_set('max_execution_time', 0);
 require '../../dbconfig/db.php';
 require '../../query/users.php';
 
+
+
 $db   = new db();
 $conn = $db->connect();
 $users_id = $_SESSION['NTY3ODk3NDM0NTY3ODkw'];
@@ -51,7 +53,7 @@ $e_result = $estm->fetch();
                     <input name="fname_i_u" type="text" id="fname_i_u" value="<?php echo $e_result['fullname'] ?>" class="f_name drclear" />
                   </div>
                 </td>
-              </tr>              
+              </tr>
               <tr>
                 <td>
                   <div id="inputName">Staff Code:</div>
@@ -141,19 +143,20 @@ $e_result = $estm->fetch();
                 <td>
                   <div id="formInputs">
                     <select name="devicebrands_u_i" id="devicebrands_u_i">
-                      <?php
-                      $vehicle = $conn->prepare(DbQuery::getDevicebrand());
-                      $vehicle->execute();
-                      while ($vresult = $vehicle->fetch()) {
-                      ?>
-                        <option value="<?php echo $vresult['id'] ?>" <?php if (!(strcmp($vresult['id'], $e_result['device_brands_id']))) {
-                                                                        echo "selected=\"selected\"";
-                                                                      } ?>><?php echo $vresult['brand'] . " " . $vresult['model'] ?>
-                        </option>
+                      <option value="0">Select Device Brands</ option>
+                        <?php
+                        $vehicle = $conn->prepare(DbQuery::getDevicebrand());
+                        $vehicle->execute();
+                        while ($vresult = $vehicle->fetch()) {
+                        ?>
+                      <option value="<?php echo $vresult['id'] ?>" <?php if (!(strcmp($vresult['id'], $e_result['device_brands_id']))) {
+                                                                      echo "selected=\"selected\"";
+                                                                    } ?>><?php echo $vresult['brand'] . " " . $vresult['model'] ?>
+                      </option>
 
-                      <?php
-                      }
-                      ?>
+                    <?php
+                        }
+                    ?>
                     </select>
                   </div>
 
@@ -187,25 +190,28 @@ $e_result = $estm->fetch();
                 <td>
                   <div id="formInputs">
                     <select name="region_u_i" id="region_u_i">
-                      <?php
-                      if ($syscat['syscategory_id'] == 3) {
-                        $vehicle = $conn->prepare(DbQuery::getIndividualRegion());
-                        $vehicle->execute(array($region_id));
-                      } else if ($syscat['syscategory_id'] == 1) {
-                        $vehicle = $conn->prepare(DbQuery::getAllRegion());
-                        $vehicle->execute();
-                      } else if ($syscat['syscategory_id'] == 4) {
-                        $vehicle = $conn->prepare(DbQuery::getIndividualRegion());
-                        $vehicle->execute(array($region_id));
-                      }
-                      while ($vresult = $vehicle->fetch()) {
-                      ?><option value="<?php echo $vresult['id'] ?>" <?php if (!(strcmp($vresult['id'], $e_result['region_id']))) {
-                                                                        echo "selected=\"selected\"";
-                                                                      } ?>><?php echo $vresult['name'] ?>
-                        </option>
-                      <?php
-                      }
-                      ?>
+                      <option value="0">Select Region</ option>
+                        <?php
+                        if ($syscat['syscategory_id'] == 3) {
+                          $vehicle = $conn->prepare(DbQuery::getIndividualRegion());
+                          $vehicle->execute(array($region_id));
+                        } else if ($syscat['syscategory_id'] == 1) {
+                          $vehicle = $conn->prepare(DbQuery::getAllRegion());
+                          $vehicle->execute();
+                        } else if ($syscat['syscategory_id'] == 4) {
+                          $vehicle = $conn->prepare(DbQuery::getIndividualRegion());
+                          $vehicle->execute(array($region_id));
+                        }
+
+                        while ($vresult = $vehicle->fetch()) {
+                        ?>
+                      <option value="<?php echo $vresult['id'] ?>" <?php if (!(strcmp($vresult['id'], $e_result['region_id']))) {
+                                                                      echo "selected=\"selected\"";
+                                                                    } ?>><?php echo $vresult['name'] ?>
+                      </option>
+                    <?php
+                        }
+                    ?>
                     </select>
                   </div>
                 </td>
@@ -216,20 +222,22 @@ $e_result = $estm->fetch();
                 </td>
                 <td>
                   <div id="formInputs">
-                    <select name="region_u_i" id="region_u_i">
-                      <?php
+                    <select name="state_u_i" id="state_u_i">
+                      <option value="0">Select State</ option>
+                        <?php
 
-                      $vehicleb = $conn->prepare(DbQuery::getState());
-                      $vehicleb->execute(array($e_result['region_id']));
+                        $vehicleb = $conn->prepare(DbQuery::getState());
+                        $vehicleb->execute(array($e_result['region_id']));
 
-                      while ($vresultb = $vehicleb->fetch()) {
-                      ?><option value="<?php echo $vresultb['id'] ?>" <?php if (!(strcmp($vresultb['id'], $e_result['state_id']))) {
-                                                                        echo "selected=\"selected\"";
-                                                                      } ?>><?php echo $vresultb['name'] ?>
-                        </option>
-                      <?php
-                      }
-                      ?>
+                        while ($vresultb = $vehicleb->fetch()) {
+                        ?>
+                      <option value="<?php echo $vresultb['id'] ?>" <?php if (!(strcmp($vresultb['id'], $e_result['state_id']))) {
+                                                                      echo "selected=\"selected\"";
+                                                                    } ?>><?php echo $vresultb['name'] ?>
+                      </option>
+                    <?php
+                        }
+                    ?>
                     </select>
                   </div>
                 </td>
@@ -240,20 +248,22 @@ $e_result = $estm->fetch();
                 </td>
                 <td>
                   <div id="formInputs">
-                    <select name="region_u_i" id="region_u_i">
-                      <?php
+                    <select name="lga_u_i" id="lga_u_i">
+                      <option value="0">Select LGA</ option>
+                        <?php
 
-                      $vehiclebb = $conn->prepare(DbQuery::getLga());
-                      $vehiclebb->execute(array($e_result['state_id']));
+                        $vehiclebb = $conn->prepare(DbQuery::getLga());
+                        $vehiclebb->execute(array($e_result['state_id']));
 
-                      while ($vresultbb = $vehiclebb->fetch()) {
-                      ?><option value="<?php echo $vresultbb['id'] ?>" <?php if (!(strcmp($vresultbb['id'], $e_result['lga_id']))) {
-                                                                          echo "selected=\"selected\"";
-                                                                        } ?>><?php echo $vresultbb['name'] ?>
-                        </option>
-                      <?php
-                      }
-                      ?>
+                        while ($vresultbb = $vehiclebb->fetch()) {
+                        ?>
+                      <option value="<?php echo $vresultbb['id'] ?>" <?php if (!(strcmp($vresultbb['id'], $e_result['lga_id']))) {
+                                                                        echo "selected=\"selected\"";
+                                                                      } ?>><?php echo $vresultbb['name'] ?>
+                      </option>
+                    <?php
+                        }
+                    ?>
                     </select>
                   </div>
                 </td>
@@ -265,28 +275,21 @@ $e_result = $estm->fetch();
                 <td>
                   <div id="formInputs">
                     <select name="area_u_i" id="area_u_i">
-                      <?php
+                      <option value="0">Select Area</ option>
+                        <?php
 
-                      if ($syscat['syscategory_id'] == 3) {
-                        $stm = $conn->prepare(DbQuery::getDepots());
-                        $stm->execute(array($region_id));
-                      } else if ($syscat['syscategory_id'] == 1) {
-                        $stm = $conn->prepare(DbQuery::getDepotAdmin());
-                        $stm->execute();
-                      } else if ($syscat['syscategory_id'] == 4) {
-                        $stm = $conn->prepare(DbQuery::getDepotSupervisor());
-                        $stm->execute(array($depots_id));
-                      }
+                        $areaId = $conn->prepare(DbQuery::getArea());
+                        $areaId->execute(array($e_result['lga_id']));
 
-                      while ($result = $stm->fetch()) {
-                      ?>
-                        <option value="<?php echo $result['id'] ?>" <?php if (!(strcmp($result['id'], $e_result['depots_id']))) {
-                                                                      echo "selected=\"selected\"";
-                                                                    } ?>><?php echo $result['name'] ?>
-                        </option>
-                      <?php
-                      }
-                      ?>
+                        while ($getAreaId = $areaId->fetch()) {
+                        ?>
+                      <option value="<?php echo $getAreaId['id'] ?>" <?php if (!(strcmp($getAreaId['id'], $e_result['area_id']))) {
+                                                                        echo "selected=\"selected\"";
+                                                                      } ?>><?php echo $getAreaId['name'] ?>
+                      </option>
+                    <?php
+                        }
+                    ?>
                     </select>
                   </div>
                 </td>
@@ -297,29 +300,31 @@ $e_result = $estm->fetch();
                 </td>
                 <td>
                   <div id="formInputs">
+
                     <select name="depots_u_id" id="depots_u_id">
-                      <?php
+                      <option value="0">Select Depot</ option>
+                        <?php
 
-                      if ($syscat['syscategory_id'] == 3) {
-                        $stm = $conn->prepare(DbQuery::getDepots());
-                        $stm->execute(array($region_id));
-                      } else if ($syscat['syscategory_id'] == 1) {
-                        $stm = $conn->prepare(DbQuery::getDepotAdmin());
-                        $stm->execute();
-                      } else if ($syscat['syscategory_id'] == 4) {
-                        $stm = $conn->prepare(DbQuery::getDepotSupervisor());
-                        $stm->execute(array($depots_id));
-                      }
+                        if ($syscat['syscategory_id'] == 3) {
+                          $stm = $conn->prepare(DbQuery::getDepots());
+                          $stm->execute(array($region_id));
+                        } else if ($syscat['syscategory_id'] == 1) {
+                          $stm = $conn->prepare(DbQuery::getDepotAdmin());
+                          $stm->execute();
+                        } else if ($syscat['syscategory_id'] == 4) {
+                          $stm = $conn->prepare(DbQuery::getDepotSupervisor());
+                          $stm->execute(array($depots_id));
+                        }
 
-                      while ($result = $stm->fetch()) {
-                      ?>
-                        <option value="<?php echo $result['id'] ?>" <?php if (!(strcmp($result['id'], $e_result['depots_id']))) {
-                                                                      echo "selected=\"selected\"";
-                                                                    } ?>><?php echo $result['name'] ?>
-                        </option>
-                      <?php
-                      }
-                      ?>
+                        while ($result = $stm->fetch()) {
+                        ?>
+                      <option value="<?php echo $result['id'] ?>" <?php if (!(strcmp($result['id'], $e_result['depots_id']))) {
+                                                                    echo "selected=\"selected\"";
+                                                                  } ?>><?php echo $result['name'] ?>
+                      </option>
+                    <?php
+                        }
+                    ?>
                     </select>
                   </div>
                 </td>
@@ -343,18 +348,19 @@ $e_result = $estm->fetch();
                 <td>
                   <div id="formInputs">
                     <select name="distchannel_u_i" id="distchannel_u_i">
-                      <?php
-                      $vehicle = $conn->prepare(DbQuery::getVehicle());
-                      $vehicle->execute();
-                      while ($vresult = $vehicle->fetch()) {
-                      ?>
-                        <option value="<?php echo $vresult['id'] ?>" <?php if (!(strcmp($vresult['id'], $e_result['vehicle_id']))) {
-                                                                        echo "selected=\"selected\"";
-                                                                      } ?>><?php echo $vresult['name'] ?>
-                        </option>
-                      <?php
-                      }
-                      ?>
+                      <option value="0">Select Distribution Channel</ option>
+                        <?php
+                        $vehicle = $conn->prepare(DbQuery::getVehicle());
+                        $vehicle->execute();
+                        while ($vresult = $vehicle->fetch()) {
+                        ?>
+                      <option value="<?php echo $vresult['id'] ?>" <?php if (!(strcmp($vresult['id'], $e_result['vehicle_id']))) {
+                                                                      echo "selected=\"selected\"";
+                                                                    } ?>><?php echo $vresult['name'] ?>
+                      </option>
+                    <?php
+                        }
+                    ?>
                     </select>
                   </div>
                 </td>
