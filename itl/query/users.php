@@ -110,7 +110,8 @@ where id = ?";
 		$init = " 
 		select a.id, a.staffcode as ecode, a.fullname, b.name as depots, 
 		c.name as areas, a.users_status as issues, d.name as syscat,
-		e.name as regions, f.name as state, g.name as coveragelga
+		e.name as regions, f.name as state, g.name as coveragelga, a.issues as issues, 
+		a.actiontaken as actions, a.actionplan_id, a.issues_id
 		from users a, depot b, area c,  system_category d, region e, state f,  lga g 
 		where a.depot_id = b.id
 		and a.area_id = c.id
@@ -129,9 +130,10 @@ where id = ?";
 	public static function sysAdminList() {
 		$init = " 
 		
-select a.id, a.staffcode as ecode, a.fullname, b.name as depots, 
+		select a.id, a.staffcode as ecode, a.fullname, b.name as depots, 
 		c.name as areas, a.users_status as issues, d.name as syscat,
-		e.name as regions, f.name as state, g.name as lga
+		e.name as regions, f.name as state, g.name as lga, a.issues as issues, 
+		a.actiontaken as actions, a.actionplan_id, a.issues_id
 		from users a, depot b, area c,  system_category d, region e, state f,  lga g 
 		where a.depot_id = b.id
 		and a.area_id = c.id
@@ -148,7 +150,8 @@ select a.id, a.staffcode as ecode, a.fullname, b.name as depots,
 		$init = " 
 		select a.id, a.staffcode as ecode, a.fullname, b.name as depots, 
 		c.name as areas, a.users_status as issues, d.name as syscat,
-		e.name as regions, f.name as state, g.name as coveragelga
+		e.name as regions, f.name as state, g.name as coveragelga, a.issues as issues, 
+		a.actiontaken as actions, a.actionplan_id, a.issues_id
 		from users a, depot b, area c,  system_category d, region e, state f,  lga g 
 		where a.depot_id = b.id
 		and a.area_id = c.id
@@ -322,9 +325,17 @@ select a.id, a.staffcode as ecode, a.fullname, b.name as depots,
 
 	public static function insertIntoEmpIssues() {
 		$init = "
-		INSERT INTO employee_issues(employee_id, issues_id, entry_date,entry_time) values (?,?,?,?)";
+		INSERT INTO users_issues ( users_id, issue_id, entry_date, entry_time) values (?,?,?,?)";
 		return $init; 
 	}
+
+	public static function updateIssuesIssues()
+	{
+		$init = "
+		UPDATE users set issues_id = ?, issues = (select name from issues where id = ?) where id = ?";
+		return $init;
+	}
+	
 
 	public static function getAllActionPlan() {
 		$init = "SELECT id, name from action_plan WHERE status =  0 order by name";
@@ -333,9 +344,23 @@ select a.id, a.staffcode as ecode, a.fullname, b.name as depots,
 
 	public static function insertIntoActionPlan() {
 		$init = "
-		insert into employee_action_plan(employee_id,issues_id, action_plan_id, entry_date, entry_time)
-		values(?,?,?,?,?)";
+		insert into users_action_taken (users_issues_id, action_plan_id, entry_date, entry_time) values(?,?,?,?)";
 		return $init; 
+	}
+
+	public static function getUserIssuesId()
+	{
+		$init = "
+		select id from users_issues where users_id = ? order by id desc  limit 1 ";
+		return $init;
+	}
+
+	public static function updateIntoActionPlan()
+	{
+		$init =
+		"
+		UPDATE users set actionplan_id = ?, actiontaken = (select name from action_plan where id = ?) where id = ?";
+		return $init;
 	}
 
 	public static function getActioPlanByName() {
@@ -349,6 +374,8 @@ select a.id, a.staffcode as ecode, a.fullname, b.name as depots,
 		order by b.id desc limit 1";
 		return $init; 
 	}
+
+
 
 	public static function getActioPlanByID() {
 		$init = "

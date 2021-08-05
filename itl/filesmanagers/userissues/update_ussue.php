@@ -15,6 +15,9 @@ ini_set('max_execution_time', 0);
     $stm->execute(array($_POST['id'],$_POST['mIssues'],$date,$time));
     $rows = $stm->fetch();
 
+    $stmm = $conn->prepare(DbQuery::updateIssuesIssues());
+    $stmm->execute(array($_POST['mIssues'], $_POST['mIssues'], $_POST['id']));
+
     $json =array(
      "status"=>200
     );

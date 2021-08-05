@@ -303,7 +303,6 @@ $(document).ready(function() {
 
 
     $(document).on('click', '.butoss_issues', function() {
-        //$("#butoss").on('click',function() {	
         $("#loader_httpFeed").show();
         let mIssues = $("input[type='radio'].issue_vals:checked").val();
         let issuename = $("input[type='radio'].issue_vals:checked").attr("lang");
@@ -323,6 +322,7 @@ $(document).ready(function() {
                 cache: false,
                 dataType: "json",
                 success: function(xhr) {
+                     dalert.alert("Issue Added Successfully");
                     $('.rst' + id).attr("nig", mIssues);
                     $('#myIssues' + id).html(issuename);
                     $("#loader_httpFeed").hide();
@@ -341,6 +341,7 @@ $(document).ready(function() {
     })
 
     $(document).on('click', '.butoss_actions', function() {
+        
         //$("#butoss").on('click',function() {	
         $("#loader_httpFeed").show();
         let mActions = $("input[type='radio'].actions_vals:checked").val();
@@ -368,6 +369,7 @@ $(document).ready(function() {
                     cache: false,
                     dataType: "json",
                     success: function(xhr) {
+                   dalert.alert("Action Taken Successfully");
                         $('.rst' + id).attr("eng", mActions);
                         $('#myaction' + id).html(actionname);
                         $("#loader_httpFeed").hide();

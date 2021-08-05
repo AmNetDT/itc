@@ -7,13 +7,23 @@ ini_set('max_execution_time', 0);
 	$conn = $db->connect();
   
 ?>
-<?php 
+<?php
+
+ 
+    $st = $conn->prepare(DbQuery::getUserIssuesId());
+    $st->execute(array($_POST['id']));
+    $datarows = $st->fetch();
+
+    $stmm = $conn->prepare(DbQuery::updateIntoActionPlan());
+    $stmm->execute(array($_POST['mActions'], $_POST['mActions'], $_POST['id']));
+    $stmm->fetch();
 
     $date = date('Y-m-d');
     $time = date('h:m:s');
     $stm = $conn->prepare (DbQuery::insertIntoActionPlan());
-    $stm->execute(array($_POST['id'],$_POST['sids'],$_POST['mActions'], $date,$time));
+    $stm->execute(array($datarows['id'] ,$_POST['mActions'], $date,$time));
     $rows = $stm->fetch();
+
 
     $json =array(
      "status"=>200

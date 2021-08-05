@@ -90,7 +90,7 @@ ini_set('max_execution_time', 0);
 		$sn++;
     ?>
     <tr id="<?php echo $stmp['id'] ?>"  class="rowOdd btn_issue rst<?php echo $stmp['id']?>" lang="<?php echo $stmp['fullname']." (".$stmp['ecode'].") " ?>" 
-    eng="<?php echo getActioPlanByID($stmp['id'],$conn) ?>" nig="<?php echo getAppendedIssuesId($stmp['id'],$conn) ?>" >
+    eng="<?php echo $stmp['actionplan_id'] ?>" nig="<?php echo  $stmp['issues_id'] ?>" >
     
       <td width="87"><?php echo $sn ?></td>
       <td width="146"><?php echo $stmp['ecode'] ?></td>
@@ -99,8 +99,8 @@ ini_set('max_execution_time', 0);
       <td width="225"><?php echo $stmp['regions'] ?></td>
       <td width="223"><?php echo $stmp['depots'] ?></td>
       <td width="223"><?php echo $stmp['syscat'] ?></td>
-      <td width="253"><span id="myIssues<?php echo $stmp['id'] ?>"><?php echo getAssignedIssues($stmp['id'],$conn,$date);  ?></span></td>
-      <td width="262"><span id="myaction<?php echo $stmp['id'] ?>"><?php echo getActioPlanByName($stmp['id'],$conn,$date);  ?></span></td>
+      <td width="253"><span id="myIssues<?php echo $stmp['id'] ?>"><?php echo $stmp['issues'];  ?></span></td>
+      <td width="262"><span id="myaction<?php echo $stmp['id'] ?>"><?php echo $stmp['actions'];  ?></span></td>
     </tr>
     <?php 
 		}

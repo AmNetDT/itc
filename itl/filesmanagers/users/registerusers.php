@@ -170,7 +170,7 @@ $e_result = $estm->fetch();
             <div id="formInputs">
               <select name="region_u_i" id="region_u_i">
                 <option value="0">Select Region</ option>
-                
+
               </select>
             </div>
           </td>
