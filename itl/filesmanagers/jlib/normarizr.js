@@ -784,24 +784,17 @@ $(document).ready(function() {
         $("#loader_httpFeed").show();
         $.ajax({
             type: "POST",
-            url: "localapi/api/Module/enable",
+            url: "filesmanagers/user_modules/addmodules.php",
             data: $('.add_modules_to_users').serialize(),
             dataType: "json",
-            success: function(xhr) {
-                let callBackObject = xhr.status;
-                $("#loader_httpFeed").hide();
-                if (callBackObject == 400) {
-
-                    Swal.fire({
-                        type: 'error',
-                        text: xhr.statusmsg
-                    })
-
-                } else {
-                    //$('.include_tables').html()
-                    $('.include_table').append(xhr.data)
+            success: function(msg) {
+                if(msg.status=="400"){
+                    dalert.alert(msg.msg);
+                }else{
+                    dalert.alert(msg.msg);
+                    $('.include_table').append(msg.data)
                 }
-
+                 $("#loader_httpFeed").hide();
             },
             error: function(xhr) {
                 if (xhr.status == 404) {

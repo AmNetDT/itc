@@ -77,16 +77,28 @@ and a.id = ?
 	}
 	
 	public static function getAllUserModules(){
-		$init = "select a.id, b.name as na, c.name as ch from employee_module a, modules b, channels c
-		where a.employee_id =  ?
-		and a.module_id = b.id
-		and a.channel_id = c.id";
+		$init = "select a.id, b.name as na, 'mobile' as ch 
+		from usersmodules a, modules b
+		where a.user_id =  ?
+		and a.module_id = b.id";
 		return $init; 
 	}
-	
-	public static function getAllAppModules(){
+
+	public static function getAllAppModules()
+	{
 		$init = "select id, name from modules";
+		return $init;
+	}
+	
+	public static function insertIntoUserModule(){
+		$init = "insert into usersmodules (user_id, module_id, entry_date, entry_time) VALUES (?, ?, ?, ?)";
 		return $init; 
+	}
+
+	public static function validateModule()
+	{
+		$init = "select count(id)  as counts from usersmodules where user_id = ? and module_id = ?";
+		return $init;
 	}
 	
 	public static function getAllAppChannel(){
