@@ -18,19 +18,22 @@ $conn = $db->connect();
     $stm = $conn->prepare(DbQuery::validateModule());
     $stm->execute(array($userid, $module_id));
     $rows = $stm->fetch();
+    $lastId = $conn->lastInsertId('ingredients_id_seq');
 
     if($rows['counts']==0){
 
         $sm = $conn->prepare(DbQuery::insertIntoUserModule());
         $sm->execute(array($userid, $module_id, $date, $time));
         $sm->fetch();
+        
+
 
         //get last auto increament from insert
-        
+
 
         $json = array(
             "status" => 200,
-            "msg" => "Module Successfully added",
+            "msg" => "Module Successfully added".$lastId,
             "data"=> "<tr id='{}'  class='rowOdd clickModule clickModule{} '>
                 <td></td>
                 <td>Mobile</td>
