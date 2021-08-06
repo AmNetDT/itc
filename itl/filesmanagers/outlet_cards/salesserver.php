@@ -14,13 +14,11 @@
     $rows = $stm->fetch();
 
     $st = $conn->prepare (DbQuery::updateFetchBasket());
-    $st->execute(array($rows['outletclassid'], $rows['outletlanguageid'], $rows['outlettypeid'], $rows['outletname'],
-    $rows['outletaddress'], $rows['contactname'], $rows['contactphone'], $rows['latitude'], $rows['longitude'],
-    $rows['outlet_pic'], $rows['urno'], $rows['urno']
-    ));
+    $st->execute(array($rows['outletname'],$rows['urno']));
+    
 
     $json =array(
-     "status"=>200
+      "status"=>200
     );
 
     echo json_encode($json);

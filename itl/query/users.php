@@ -123,7 +123,7 @@ where id = ?";
 		select a.id, a.staffcode as ecode, a.fullname, b.name as depots, 
 		c.name as areas, a.users_status as issues, d.name as syscat,
 		e.name as regions, f.name as state, g.name as coveragelga, a.issues as issues, 
-		a.actiontaken as actions, a.actionplan_id, a.issues_id
+		a.actiontaken as actions, a.actionplan_id, a.issues_id, totaloutlets as total_outlets
 		from users a, depot b, area c,  system_category d, region e, state f,  lga g 
 		where a.depot_id = b.id
 		and a.area_id = c.id
@@ -145,7 +145,7 @@ where id = ?";
 		select a.id, a.staffcode as ecode, a.fullname, b.name as depots, 
 		c.name as areas, a.users_status as issues, d.name as syscat,
 		e.name as regions, f.name as state, g.name as lga, a.issues as issues, 
-		a.actiontaken as actions, a.actionplan_id, a.issues_id
+		a.actiontaken as actions, a.actionplan_id, a.issues_id, totaloutlets as total_outlets
 		from users a, depot b, area c,  system_category d, region e, state f,  lga g 
 		where a.depot_id = b.id
 		and a.area_id = c.id
@@ -163,7 +163,7 @@ where id = ?";
 		select a.id, a.staffcode as ecode, a.fullname, b.name as depots, 
 		c.name as areas, a.users_status as issues, d.name as syscat,
 		e.name as regions, f.name as state, g.name as coveragelga, a.issues as issues, 
-		a.actiontaken as actions, a.actionplan_id, a.issues_id
+		a.actiontaken as actions, a.actionplan_id, a.issues_id, totaloutlets as total_outlets
 		from users a, depot b, area c,  system_category d, region e, state f,  lga g 
 		where a.depot_id = b.id
 		and a.area_id = c.id
@@ -403,11 +403,11 @@ where id = ?";
 	public static function getRepCustomers() {
 		$init = "
 		select c.id, c.id as outlet_id, c.id as urno, c.outletname
-		from employee_outlet_visit_cycle a, employee_route b, outlets c
-		where a.route_id = b.route_id
-		and c.id::varchar = a.urno::varchar
-		and b.employee_id = ?
-		and lower(a.visit_days) = lower(?)
+from user_outlet_visit_cycle a, user_route b, outlets c
+where a.route_id = b.route_id
+and c.id::varchar = a.urno::varchar
+and b.users_id = ?
+and lower(a.visit_days) = lower(?)
 		";
 		return $init; 
 	}
@@ -424,14 +424,15 @@ where id = ?";
 	public static function getAllOutletCards() {
 		$init = "
 		select a.id as auto, b.id, trim(LEADING '0' FROM a.urno) as urno, f.name as syscat, c.name as classname, d.name as language, e.name as outlettype,
-		a.outletname, a.outletaddress, a.contactname, a.contactphone, a.latitude, a.longitude, a.entry_date,  a.entry_date_time, b.syscategory_id
-		from employee_outletcard a, employees b, outlet_class c, languages d, outlet_type e, syscategory f
-		where cast(a.employee_id as integer) = b.id
+		a.outletname, a.outletaddress, a.contactname, a.contactphone, a.latitude, a.longitude, a.entry_date,  a.entry_date_time, b.system_category_id
+		from user_outletcard a, users b, outlet_class c, languages d, outlet_type e, system_category f
+		where cast(a.user_id as integer) = b.id
 		and cast(a.outletclassid as integer) = c.id
 		and cast(a.outletlanguageid as integer) = d.id
 		and cast(a.outlettypeid as integer) = e.id
-		and b.syscategory_id = f.id
-		and (trim(LEADING '0' FROM a.urno)  =  ? or trim(LEADING '0' FROM a.urno)  =  ?) order by a.entry_date_time desc";
+		and b.system_category_id = f.id
+		and (trim(LEADING '0' FROM a.urno)  = ? or trim(LEADING '0' FROM a.urno)  = ?) order by a.entry_date_time desc
+		";
 		return $init; 
 	}
 
@@ -439,17 +440,17 @@ where id = ?";
 		$init = "
 		select urno, outletclassid, outletlanguageid,outlettypeid,outletname,outletaddress,contactname,contactphone,
 		latitude,longitude,outlet_pic     
-		from employee_outletcard where id = ?";
+		from user_outletcard where id = ?";
 		return $init; 
 	}
 
 	public static function getAllTodayOutlet() {
 		$init = "
 		select c.id as urno, c.outletname, a.visit_sequence::integer-1 as seq
-		from employee_outlet_visit_cycle a, employee_route b, outlets c
+		from user_outlet_visit_cycle a, user_route b, outlets c
 		where a.route_id = b.route_id
 		and a.urno::varchar = c.id::varchar
-		and b.employee_id = ?
+		and b.users_id = ?
 		and lower(a.visit_days) = lower(?)
 		order by a.visit_sequence::integer asc";
 		return $init; 
@@ -457,10 +458,8 @@ where id = ?";
 
 	public static function updateFetchBasket() {
 		$init = "
-		update outlets set outletclassid = ?, outletlanguageid = ?, outlettypeid = ?,   
-		outletname = ?, outletaddress = ?, contactname = ?, contactphone = ?, 
-		latitude = ?, longitude = ?, outlet_pic = ?
-		where (id = ?  or urno = ?)";
+		update outlets set   outletname = ?
+		where (id = ?)";
 		return $init; 
 	}
 
@@ -502,20 +501,18 @@ where id = ?";
 
 	public static function routeManager(){
 		$init = " 
-		select  a.id, a.employee_id, a.route_id, a.depot_id, b.name as depotname,
-		(select concat('(',employee_code,') ', first_name,' ',last_name) from employees where id = a.employee_id ) as repname
-		from employee_route  a, depots b
-		where region_id  = ?
-		and b.id = a.depot_id
-		order by a.depot_id, a.route_id";
+		select  a.id, a.users_id, a.route_id, a.depot_id, 
+b.name as depotname,(select concat('(',staffcode,') ', fullname) from users where id = a.users_id ) as repname
+from user_route  a, depot b where a.region_id  = ? and b.id = a.depot_id 
+order by a.depot_id, a.route_id";
 		return $init; 
 	}
 
 	public static function routeManagerAdmin() {
 		$init = " 
-		select  a.id, a.employee_id, a.route_id, a.depot_id, b.name as depotname,
-		(select concat('(',employee_code,') ', first_name,' ',last_name) from employees where id = a.employee_id ) as repname
-		from employee_route  a, depots b
+		select  a.id, a.users_id, a.route_id, a.depot_id, b.name as depotname,
+		(select concat('(',staffcode,') ', fullname) from users where id = a.users_id ) as repname
+		from user_route  a, depot b
 		where b.id = a.depot_id
 		order by a.depot_id, a.route_id";
 		return $init; 
@@ -595,7 +592,7 @@ where id = ?";
 	}
 
 	public static function repOutletSalesUpdates() {
-		$init = "update employee_route set employee_id = 0 where id = ?";
+		$init = "update user_route set employee_id = 0 where id = ?";
 		return $init; 
 	}
 	
@@ -609,25 +606,25 @@ where id = ?";
 	}
 
 	public static function UpdateCustomersPhoneNumber(){
-		$init  = "select concat(b.first_name,' ',b.last_name) as repname, 
+		$init  = "select fullname as repname, 
 		a.id, a.contactphone, d.name as region, c.name as depot, e.id as urno, e.outletname
-		from phonenumbercard a, employees b, depots c, regions d, outlets e
-		where a.employee_id::varchar = b.id::varchar
+		from phonenumbercard a, users b, depot c, region d, outlets e
+		where a.user_id::varchar = b.id::varchar
 		and b.region_id = ?
 		and b.region_id = d.id
-		and b.depots_id = c.id
+		and b.depot_id = c.id
 		and e.id::varchar = a.outlet_id::varchar
 		and times <> '00:00:00'";
 		return $init ;
 	}
 
 	public static function UpdateCustomersPhoneNumberAdmin(){
-		$init  = "select concat(b.first_name,' ',b.last_name) as repname, 
+		$init  = "select fullname as repname, 
 		a.id, a.contactphone, d.name as region, c.name as depot, e.id as urno, e.outletname
-		from phonenumbercard a, employees b, depots c, regions d, outlets e
-		where a.employee_id::varchar = b.id::varchar
+		from phonenumbercard a, users b, depot c, region d, outlets e
+		where a.user_id::varchar = b.id::varchar
 		and b.region_id = d.id
-		and b.depots_id = c.id
+		and b.depot_id = c.id
 		and e.id::varchar = a.outlet_id::varchar
 		and times <> '00:00:00'";
 		return $init ;
@@ -654,14 +651,14 @@ where id = ?";
 	}
 
 	public static function fetchAllDefaultToken() {
-		$init  = "select  concat(b.first_name,' ',b.last_name) as repname, 
+		$init  = "select  fullname as repname, 
 		a.id, d.name as region, c.name as depot, e.id as urno, e.outletname, a.time, a.curlocation,
 		concat(e.latitude,':',e.longitude) as outletlocation, e.contactphone, b.id as employee_id
-		from tokenrequest a, employees b, depots c, regions d, outlets e
-		where a.employee_id::varchar = b.id::varchar
+		from tokenrequest a, users b, depot c, region d, outlets e
+		where a.user_id::varchar = b.id::varchar
 		and b.region_id = ?
 		and b.region_id = d.id
-		and b.depots_id = c.id
+		and b.depot_id = c.id
 		and a.urno::varchar = e.id::varchar
 		and a.entry_date =  ?";
 		return $init ;
