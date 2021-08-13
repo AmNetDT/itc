@@ -458,15 +458,17 @@ and lower(a.visit_days) = lower(?)
 
 	public static function updateFetchBasket() {
 		$init = "
-		update outlets set   outletname = ?
-		where (id = ?)";
+		update outlets set outletclass_id = ?, outletlanguage_id = ?, outlettype_id = ?,   
+		outletname = ?, outletaddress = ?, contactname = ?, contactphone = ?, 
+		latitude = ?, longitude = ?
+		where (id = ?  or urno = ?)";
 		return $init; 
 	}
 
 	public static function FetchCompetition() {
 		$init = "
-		select a.id, c.name as region, d.name as depots, a.productname, a.product_code
-		from employee_competition a, regions c, depots d
+		select a.id, c.name as region, d.name as depots, a.competitorname, a.skuname, a.skucode
+		from competition a, region c, depot d
 		where a.region_id = c.id
 		and a.depot_id = d.id
 		and a.region_id =  ?
@@ -476,15 +478,14 @@ and lower(a.visit_days) = lower(?)
 
 	public static function createCompetitionBrands() {
 		$init = "
-		insert into employee_competition (productname,product_code, region_id, depot_id)
-		values(?,?,?,?) RETURNING id";
+		INSERT INTO user_competition (depot_id, competition_id, entry_date, entry_time) VALUES (?, ?, ?, ?) RETURNING id";
 		return $init; 
 	}
 
 	public static function FetchInsertedCompetition() {
 		$init = "
-		select a.id, c.name as region, d.name as depots, a.productname, a.product_code
-		from employee_competition a, regions c, depots d
+		select a.id, c.name as region, d.name as depots, a.competitorname, a.skuname, a.skucode
+		from competition a, regions c, depots d
 		where a.region_id = c.id
 		and a.depot_id = d.id
 		and  a.id = ?
@@ -494,7 +495,7 @@ and lower(a.visit_days) = lower(?)
 
 	public static function RemoveCompetition() {
 		$init = "
-		delete from employee_competition where id = ?
+		delete from competition where id = ?
 		";
 		return $init; 
 	}
@@ -606,33 +607,46 @@ order by a.depot_id, a.route_id";
 	}
 
 	public static function UpdateCustomersPhoneNumber(){
-		$init  = "select fullname as repname, 
-		a.id, a.contactphone, d.name as region, c.name as depot, e.id as urno, e.outletname
-		from phonenumbercard a, users b, depot c, region d, outlets e
-		where a.user_id::varchar = b.id::varchar
-		and b.region_id = ?
-		and b.region_id = d.id
-		and b.depot_id = c.id
-		and e.id::varchar = a.outlet_id::varchar
-		and times <> '00:00:00'";
+		$init  = "select a.fullname as repname, b.id,
+b.contactphone, c.name as depot, b.outlet_id as urno, d.outletname, e.name as region
+from users a, phonenumbercard b, depot c, outlets d, region e
+where a.id = b.user_id
+and c.id = a.depot_id
+and b.outlet_id = d.id
+and e.id = a.region_id
+and b.times <> '00:00:00'
+and a.region_id = ?'";
 		return $init ;
 	}
 
 	public static function UpdateCustomersPhoneNumberAdmin(){
-		$init  = "select fullname as repname, 
-		a.id, a.contactphone, d.name as region, c.name as depot, e.id as urno, e.outletname
-		from phonenumbercard a, users b, depot c, region d, outlets e
-		where a.user_id::varchar = b.id::varchar
-		and b.region_id = d.id
-		and b.depot_id = c.id
-		and e.id::varchar = a.outlet_id::varchar
-		and times <> '00:00:00'";
+		$init  = "select a.fullname as repname, b.id,
+b.contactphone, c.name as depot, b.outlet_id as urno, d.outletname, e.name as region
+from users a, phonenumbercard b, depot c, outlets d, region e
+where a.id = b.user_id
+and c.id = a.depot_id
+and b.outlet_id = d.id
+and e.id = a.region_id
+and b.times <> '00:00:00'";
 		return $init ;
 	}
 
 	public static function getUpdateMobileDetails(){
 		$init  = "select outlet_id, contactphone from phonenumbercard where id = ?";
 		return $init ;
+	}
+
+	public static function getCompetitorBrandForAdmin()
+	{
+		$init = "select a.id, concat(skucode ,'-', skuname, '-', company) as products from competition a";
+		return $init;
+	}
+
+	public static function getCompetitorBrandForSysMonitor()
+	{
+		$init = "select a.id, concat(skucode ,'-', skuname, '-', company) as products from competition a
+		where  a.region_id = ?";
+		return $init;
 	}
 
 	public static function updateMobileDetails(){
@@ -726,6 +740,31 @@ order by a.depot_id, a.route_id";
 		and a.employee_id = ?
 		and a.visit_date = ?";
 		return $init; 
+	}
+
+	public static function fetchAllAdminCompetition()
+	{
+		$init = " 
+		select b.id, a.skuname, a.skucode, c.name as depotname, d.name as statename, e.name as regionname
+		from competition a, user_competition b, depot c, state d, region e
+		where a.id = b.competition_id
+		and a.region_id = c.region_id
+		and d.id = c.state_id
+		and e.id = c.region_id";
+		return $init;
+	}
+
+	public static function fetchAllSupervisorCompetition()
+	{
+		$init = " 
+		select b.id, a.skuname, a.skucode, c.name as depotname, d.name as statename, e.name as regionname
+		from competition a, user_competition b, depot c, state d, region e
+		where a.id = b.competition_id
+		and a.region_id = c.region_id
+		and d.id = c.state_id
+		and e.id = c.region_id
+		and c.region_id = ?";
+		return $init;
 	}
 
 }
