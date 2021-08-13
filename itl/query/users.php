@@ -17,7 +17,7 @@ class DbQuery{
 
     public static function getDepots(){
 		$init = " 
-		select a.id, concat(a.name,'-',b.name,'-',c.name, d.name) as name
+		select a.id , concat(a.name,'-',b.name,'-',c.name, d.name) as name
 from depot a, region b, state c, lga d
 where a.region_id = b.id
 and a.state_id = c.id
