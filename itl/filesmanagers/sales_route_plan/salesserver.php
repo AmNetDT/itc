@@ -21,7 +21,7 @@
       "msg"=>"  FAIL, Wrong Edcode",
       "name"=>''
     );
-    #
+  
   }else{
 
     $stm = $conn->prepare (DbQuery::routeAndEdocdeChecker());

@@ -741,45 +741,6 @@ $(document).ready(function() {
         return false;
     })
 
-    $(document).on('click', '.dlete_mod_remove', function() {
-        $("#loader_httpFeed").show();
-        let id = $(this).attr("id");
-        let dataString = "id=" + id;
-        $.ajax({
-            type: "POST",
-            url: "localapi/api/Module/disable",
-            data: dataString,
-            dataType: "json",
-            success: function(xhr) {
-                let callBackObject = xhr.status;
-
-                if (callBackObject == 400) {
-
-                    Swal.fire({
-                        type: 'error',
-                        text: xhr.statusmsg
-                    })
-
-                } else {
-                    //$('.include_tables').html()
-                    $('.clickModule' + id).remove();
-                }
-                $("#loader_httpFeed").hide();
-            },
-            error: function(xhr) {
-                if (xhr.status == 404) {
-                    $("#loader_httpFeed").hide();
-                    dalert.alert("internet connection working");
-                } else {
-                    $("#loader_httpFeed").hide();
-                    dalert.alert("internet is down");
-                }
-            }
-        });
-        return false;
-    })
-
-
     $(document).on('click', '.r_addmodules', function() {
         $("#loader_httpFeed").show();
         $.ajax({
@@ -1267,7 +1228,7 @@ $(document).ready(function() {
                 success: function(msg) {
                     $("#loader_httpFeed").hide();
                     new top.PopLayer({
-                        "title": `Load Out VS Sales-> ${username.toUpperCase()}`,
+                        "title": `Daily Basket-> ${username.toUpperCase()}`,
                         "content": msg
                     });
                     ajaxLoadingCustomersCards = false;
@@ -1509,13 +1470,17 @@ $(document).ready(function() {
 
 
     $(document).on('click', '.btn_tm_outlets_fetch_all', function() {
+
         $("#loader_httpFeed").show();
-        let employeeid = $(this).attr("lang");
+        let urno = $(this).attr("lang");
+        let user_id = $(this).attr("eng");
 
         if (!ajaxLoadingOutletCards) {
             ajaxLoadingOutletCards = true;
+
             let req = {
-                employeeid: employeeid
+                urno: urno,
+                user_id:user_id
             }
 
             $.ajax({
@@ -1539,7 +1504,33 @@ $(document).ready(function() {
                 }
             });
         }
+    })
 
+       $(document).on('click', '.dlete_mod_remove', function() {
+        $("#loader_httpFeed").show();
+        let id = $(this).attr("id");
+        let dataString = "id=" + id;
+        $.ajax({
+            type: "POST",
+            url: "filesmanagers/user_modules/deletemodule.php",
+            data: dataString,
+            dataType: "json",
+            success: function(xhr) {
+                let callBackObject = xhr.status;
+                $('.clickModule' + id).remove();
+                $("#loader_httpFeed").hide();
+            },
+            error: function(xhr) {
+                if (xhr.status == 404) {
+                    $("#loader_httpFeed").hide();
+                    dalert.alert(xhr);
+                } else {
+                    $("#loader_httpFeed").hide();
+                    dalert.alert("internet is down");
+                }
+            }
+        });
+        return false;
     })
 
 });

@@ -22,22 +22,24 @@ $conn = $db->connect();
 
     if($rows['counts']==0){
 
-        $sm = $conn->prepare(DbQuery::insertIntoUserModule());
-        $sm->execute(array($userid, $module_id, $date, $time));
-        $sm->fetch();
-        
 
+    $sm = $conn->prepare(DbQuery::insertIntoUserModule());
+    $sm->execute(array($userid, $module_id, $date, $time));
+    $rows = $sm->fetch();
+    $lastInsertedId = $rows['id'];
 
-        //get last auto increament from insert
+    $smq = $conn->prepare(DbQuery::getLastInsertedModule());
+    $smq->execute(array($lastInsertedId));
+    $qresult = $smq->fetch();
+    $modulename = $qresult['na'];
 
-
-        $json = array(
+    $json = array(
             "status" => 200,
-            "msg" => "Module Successfully added".$lastId,
-            "data"=> "<tr id='{}'  class='rowOdd clickModule clickModule{} '>
-                <td></td>
+            "msg" => "Module Successfully",
+            "data" => "<tr id='$lastInsertedId'  class='rowOdd clickModule clickModule$lastInsertedId'>
+                <td> $modulename </td>
                 <td>Mobile</td>
-                <td id='type1'><button class='' id=''>Delete</button></td>
+                <td id='type1'><button class='dlete_mod_remove dlete_mod_rem$lastInsertedId' id='$lastInsertedId'>Delete</button></td>
                 </tr>"
         );
 

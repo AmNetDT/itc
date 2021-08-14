@@ -40,7 +40,7 @@ $depots_id = $syscat['depots_id'];
               <td>
 
                 <div id="formInputs">
-                  <select name="depots_u_id" id="depots_u_id">
+                  <select name="competition_u_id" id="competition_u_id">
                     <option value="0">Select Competition</ option>
                       <?php
 
@@ -72,7 +72,7 @@ $depots_id = $syscat['depots_id'];
               <td>
                 <div id="formInputs">
 
-                  <select name="competition_u_id" id="depots_u_id">
+                  <select name="depots_u_id" id="depots_u_id">
                     <option value="0">Select Depot</ option>
                       <?php
 

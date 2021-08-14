@@ -86,33 +86,28 @@ if(!isset($_SESSION['NTY3ODk3NDM0NTY3ODkw'])){
                  Route Manager</a></li> 
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/user_modules">
                  User Module</a></li>
-                 <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/outlet_permission">
-                 Outlet Update Permission</a></li>
-
+                
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/salesmonitor">
-                 Live Sales Monitor</a></li>
+                 Stock Keeper</a></li>
 
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/outlet_permission">
                  Promo</a></li>
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/competition">
                  Competition</a></li>
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/outlet_permission">
-                 Location Viewer</a></li>
+                 Inventory</a></li>
 
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/tokenmanager">
                  Token Manager</a></li>
 
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/integrity">
-                 Load Out Manager</a></li>
+                 Daily Basket Manager</a></li>
 
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/outlet_cards">
                  Customer Cards</a></li>
 
                  <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/daily_outlet_manager">
                  Daily Outlet Manager</a></li>
-
-                 <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/mobile_number">
-                 Update Customer Mobile Numbber</a></li>
 
                  <li class="_mc">
                   <a href="javascript:void(0)" id="filesmanagers/default_token" >

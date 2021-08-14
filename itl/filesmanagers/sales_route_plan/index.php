@@ -23,10 +23,6 @@
 
 <div id="accounttile">Route Manager 
 
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Route: 0 </span>
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assigned Route: 0 </span>
-<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Un-Assigned Route: 0 </span>
-
 <span id="close"><img src="filesmanagers/jlib/cancel_icon.png"  /></span>
 </div>
 

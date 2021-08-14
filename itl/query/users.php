@@ -91,8 +91,17 @@ and a.id = ?
 	}
 	
 	public static function insertIntoUserModule(){
-		$init = "insert into usersmodules (user_id, module_id, entry_date, entry_time) VALUES (?, ?, ?, ?)";
+		$init = "insert into usersmodules (user_id, module_id, entry_date, entry_time) VALUES (?, ?, ?, ?) RETURNING id";
 		return $init; 
+	}
+
+	public static function getLastInsertedModule()
+	{
+		$init = "select a.id, b.name as na, 'mobile' as ch 
+		from usersmodules a, modules b
+		where a.id =  ?
+		and a.module_id = b.id";
+		return $init;
 	}
 
 	public static function validateModule()
@@ -495,9 +504,17 @@ and lower(a.visit_days) = lower(?)
 
 	public static function RemoveCompetition() {
 		$init = "
-		delete from competition where id = ?
+		delete from user_competition where id = ?
 		";
 		return $init; 
+	}
+
+	public static function RemoveModule()
+	{
+		$init = "
+		delete from usersmodules where id = ?
+		";
+		return $init;
 	}
 
 	public static function routeManager(){
@@ -521,20 +538,20 @@ order by a.depot_id, a.route_id";
 
 	public static function routeManagerUpdate() {
 		$init = " 
-		Update employee_route a set employee_id = (select id::integer from employees where employee_code = ? limit 1) 
+		Update user_route a set user_id = (select id::integer from users where staffcode = ? limit 1) 
 		where a.id = ?";
 		return $init; 
 	}
 
 	public static function routeAndEdocdeChecker() {
 		$init = " 
-		select concat('(',employee_code,') ', first_name,' ',last_name) as nam from employees where employee_code = ?";
+		select concat('(',staffcode,') ',fullname) as nam from users where staffcode = ?";
 		return $init; 
 	}
 
 	public static function routeAndEdocdeCheckerCount() {
 		$init = " 
-		select count(id) as nam from employees where employee_code = ?";
+		select count(id) as nam from users where staffcode = ?";
 		return $init; 
 	}
 
@@ -598,11 +615,13 @@ order by a.depot_id, a.route_id";
 	}
 	
 	public static function DataIntegrity() {
-		$init = "select a.product_name as proname, a.product_code as sku, a.qty as dy,(Select sum(qty) from cache_employee_sales_entry 
-		where lower(product_code) = lower(a.product_code) and entry_date = ? and employee_id = b.id) as mt
-		from products a, employees b
-		where lower(a.customerno) = lower(b.customer_code)
-		and b.id = ?";
+		$init = "select a.productname as proname, a.productcode as sku, 
+concat(a.qty_in_row,'.',a.qty_in_pack) as dy
+from daily_basket a, users b
+where a.user_id = b.id
+and a.entry_date = ?
+and b.id = ?
+";
 		return $init; 
 	}
 
@@ -734,11 +753,12 @@ and b.times <> '00:00:00'";
 
 	public static function allTmSalesRepsOutlets(){
 		$init = " 
-		select b.id as urno, b.outletname , b.tmtoken, b.contactphone
-		from sales_route_plan a, outlets b 
-		where a.outlet_id = b.id
-		and a.employee_id = ?
-		and a.visit_date = ?";
+		select c.id as urno, c.customerno, c.defaulttoken, c.contactphone from
+		user_route a, user_outlet_visit_cycle b, outlets c
+		where a.route_id = b.route_id 
+		and b.urno::integer = c.id
+		and a.users_id = ?
+		and b.urno::integer = ?";
 		return $init; 
 	}
 
@@ -764,6 +784,19 @@ and b.times <> '00:00:00'";
 		and d.id = c.state_id
 		and e.id = c.region_id
 		and c.region_id = ?";
+		return $init;
+	}
+
+	public static function currentCompetition()
+	{
+		$init = " 
+		select b.id, a.skuname, a.skucode, c.name as depotname, d.name as statename, e.name as regionname
+		from competition a, user_competition b, depot c, state d, region e
+		where a.id = b.competition_id
+		and a.region_id = c.region_id
+		and d.id = c.state_id
+		and e.id = c.region_id
+		and b.id = ?";
 		return $init;
 	}
 

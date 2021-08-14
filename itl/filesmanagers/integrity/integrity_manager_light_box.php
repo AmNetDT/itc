@@ -13,8 +13,8 @@
     <th width="200" id="datatableColcontent">S/N</th>
     <th width="200" id="datatableColcontent">Product Name</th>
     <th width="62" id="datatableColcontent">Product Code</th>
-    <th width="62" id="datatableColcontent">Dy. Load Out</th>
-    <th width="62" id="datatableColcontent">MT Qty Sold</th>
+    <th width="62" id="datatableColcontent">Quantity</th>
+
 </tr>
 <?php 
     $sn = 0; 
@@ -28,7 +28,7 @@
     <td><?php echo $stmp['proname'] ?></td>
     <td><?php echo $stmp['sku'] ?></td>
     <td><?php echo $stmp['dy'] ?></td>
-    <td><?php echo $stmp['mt'] ?></td>
+
 </tr>
 <?php 
     }
