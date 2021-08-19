@@ -104,17 +104,90 @@ and a.id = ?
 		return $init;
 	}
 
+	public static function getLastInsertedReceivaleItem()
+	{
+		$init = "select a.id, concat('(',c.staffcode,') ',c.fullname) as fullname, f.name as supplier, b.name as stock, 
+		e.name as stocktype, a.batch_name, a.lotnumber, a.qty, a.entry_date, d.name as uom
+		FROM receivable_item a, stock b, users c, uom d, stock_type e, supplier f
+		WHERE a.id = ?
+		AND a.stock_id = b.id
+		AND a.stock_type_id = e.id
+		AND a.uom = d.id
+		AND a.user_id = c.id
+		and a.supplier_id = f.id";
+		return $init;
+	}
+
+	public static function getLastInsertedReceivaleItems()
+	{
+		$init = "select a.id, concat('(',c.staffcode,') ',c.fullname) as fullname, f.name as supplier, b.name as stock, 
+		e.name as stocktype, a.batch_name, a.lotnumber, a.qty, a.entry_date, d.name as uom
+		FROM receivable_item a, stock b, users c, uom d, stock_type e, supplier f
+		WHERE a.user_id  = ?
+		AND a.stock_id = b.id
+		AND a.stock_type_id = e.id
+		AND a.uom = d.id
+		AND a.user_id = c.id
+		and a.supplier_id = f.id  order by a.id desc";
+		return $init;
+	}
+
 	public static function validateModule()
 	{
 		$init = "select count(id)  as counts from usersmodules where user_id = ? and module_id = ?";
 		return $init;
 	}
-	
+
+	public static function validateInvent()
+	{
+		
+		$init = "SELECT id, supplier_id, user_id, stock_id, batch_name, uom, qty, lotnumber, stock_type_id, entry_date, entry_time FROM receivable_item";
+		return $init;
+	}
+
+	public static function insertIntoInvent()
+	{
+		$init = "INSERT INTO receivable_item (supplier_id, user_id, stock_id, batch_name, uom, qty, lotnumber, stock_type_id, entry_date, entry_time) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id";
+		return $init;
+	}
+
+	public static function getLastInsertedInvent()
+	{
+		$init = "select a.id, b.name as na, 'mobile' as ch 
+		from usersmodules a, modules b
+		where a.id =  ?
+		and a.module_id = b.id";
+		return $init;
+	}
+
 	public static function getAllAppChannel(){
 		$init = "select id, name from channels where id = 2";
 		return $init; 
 	}
-	
+
+	public static function getStock()
+	{
+		$init = "select id, name from stock";
+		return $init;
+	}
+
+	public static function getStockType()
+	{
+		$init = "select id, name from stock_type";
+		return $init;
+	}
+
+	public static function getSupplier()
+	{
+		$init = "select id, name from supplier";
+		return $init;
+	}
+
+	public static function getUom()
+	{
+		$init = "select id, name from uom";
+		return $init;
+	}
 	//this is the first correct one
 	public static function UserCategotyAndPriv(){
 		$init = "select fullname as name, 

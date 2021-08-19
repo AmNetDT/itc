@@ -770,6 +770,36 @@ $(document).ready(function() {
         return false;
     })
 
+    $(document).on('click', '.r_inventory', function() {
+        $("#loader_httpFeed").show();
+
+        $.ajax({
+            type: "POST",
+            url: "filesmanagers/inventory/addinventory.php",
+            data: $('.add_modules_to_users').serialize(),
+            dataType: "json",
+            success: function(msg) {
+                if(msg.status=="400"){
+                    dalert.alert(msg.msg);
+                }else{
+                    dalert.alert(msg.msg);
+                    $('.include_table').prepend(msg.data)
+                }
+                 $("#loader_httpFeed").hide();
+            },
+            error: function(xhr) {
+                if (xhr.status == 404) {
+                    $("#loader_httpFeed").hide();
+                    dalert.alert("internet connection working");
+                } else {
+                    $("#loader_httpFeed").hide();
+                    dalert.alert("internet is down");
+                }
+            }
+        });
+        return false;
+    })
+
     $(document).on('click', '._logout', function() {
         let req = {
             id: "0"

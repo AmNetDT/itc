@@ -18,7 +18,6 @@ $conn = $db->connect();
     $stm = $conn->prepare(DbQuery::validateModule());
     $stm->execute(array($userid, $module_id));
     $rows = $stm->fetch();
-    $lastId = $conn->lastInsertId('ingredients_id_seq');
 
     if($rows['counts']==0){
 
