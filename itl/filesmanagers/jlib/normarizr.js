@@ -200,6 +200,49 @@ $(document).ready(function() {
         }
     })
 
+
+$(document).on('click', '.sys_mapoutlet', function() {
+        $("#loader_httpFeed").show();
+        let user = $(this).attr("lang");
+        let region = $(this).attr("id");
+
+        if (!ajaxLoadingUsersEdit) {
+
+            ajaxLoadingUsersEdit = true;
+
+            let req = {
+                region: region,
+                user: user,
+                outletname: outletname,
+                
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "filesmanagers/mapoutlet/editusers",
+                data: req,
+                cache: false,
+                success: function(msg) {
+                    $("#loader_httpFeed").hide();
+                    new top.PopLayer({
+                        "title": `Map Outlet -> ${user.toUpperCase()}`,
+                        "content": msg
+                    });
+                    ajaxLoadingUsersEdit = false;
+                },
+                error: function(xhr) {
+                    if (xhr.status == 404) {
+                        $("#loader_httpFeed").hide();
+                        dalert.alert("internet connection working");
+                    } else {
+                        $("#loader_httpFeed").hide();
+                        dalert.alert("internet is down");
+                    }
+                }
+            });
+        }
+    })
+
     $(document).on('click', '.sys_regts', function() {
         $("#loader_httpFeed").show();
         if (!ajaxLoadingUsers) {

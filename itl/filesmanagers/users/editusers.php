@@ -4,8 +4,6 @@ ini_set('max_execution_time', 0);
 require '../../dbconfig/db.php';
 require '../../query/users.php';
 
-
-
 $db   = new db();
 $conn = $db->connect();
 $users_id = $_SESSION['NTY3ODk3NDM0NTY3ODkw'];

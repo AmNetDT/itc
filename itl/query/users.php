@@ -188,18 +188,41 @@ and a.id = ?
 		$init = "select id, name from uom";
 		return $init;
 	}
+
+	public static function getUser_route()
+	{
+		$init = "select id, route_id from user_route";
+		return $init;
+	}
+
 	//this is the first correct one
 	public static function UserCategotyAndPriv(){
 		$init = "select fullname as name, 
-system_category_id as syscategory_id, region_id, 
-depot_id as depots_id
-from users
-where id = ?";
+		system_category_id as syscategory_id, region_id, 
+		depot_id as depots_id
+		from users
+		where id = ?";
 		return $init; 
 	}
 
-	
+		public static function MapOutletsysAdminList(){
+			$init = "select b.id, b.outletname, b.contactname, b.contactphone, b.region_id, d.name as region, c.name as depot , b.latitude, b.longitude, b.user_id
+			from  map_outlet b, depot c, region d
+			where b.depot_id = c.id
+			and b.region_id = d.id
+			and b.status = '1'";
+			return $init;
+		}
 
+		public static function MapOutletsysMonitorList(){
+			$init = "select b.id, b.outletname, b.contactname, b.region_id, b.contactphone, d.name as region, c.name as depot , b.latitude, b.longitude, b.user_id
+			from  map_outlet b, depot c, region d
+			where b.depot_id = c.id
+			and b.region_id = d.id
+			and b.region_id = ?
+			and b.status = '1'";
+			return $init;
+		}
 	public static function sysMonitorList(){
 		$init = " 
 		select a.id, a.staffcode as ecode, a.fullname, b.name as depots, 
@@ -484,12 +507,11 @@ where id = ?";
 
 	public static function getRepCustomers() {
 		$init = "
-		select c.id, c.id as outlet_id, c.id as urno, c.outletname
-from user_outlet_visit_cycle a, user_route b, outlets c
-where a.route_id = b.route_id
-and c.id::varchar = a.urno::varchar
-and b.users_id = ?
-and lower(a.visit_days) = lower(?)
+		select  c.id, c.id as outlet_id, c.id as urno, c.outletname
+		from user_daily_outlets a, outlets c  
+		where a.users_id = ?
+		and a.outlet_id = c.id
+		and a.visit_date =?
 		";
 		return $init; 
 	}

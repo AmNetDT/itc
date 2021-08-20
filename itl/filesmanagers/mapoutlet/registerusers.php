@@ -12,11 +12,10 @@ $sys = $conn->prepare(DbQuery::UserCategotyAndPriv());
 $sys->execute(array($users_id));
 $syscat = $sys->fetch();
 $region_id = $syscat['region_id'];
-$depots_id = $syscat['depots_id'];
+$depot_id = $syscat['depots_id'];
 
 
 $estm = $conn->prepare(DbQuery::usersEditableInfo());
-$estm->execute(array($users_id));
 $e_result = $estm->fetch();
 
 ?>
@@ -171,27 +170,7 @@ $e_result = $estm->fetch();
             <div id="formInputs">
               <select name="region_u_i" id="region_u_i">
                 <option value="0">Select Region</ option>
-                  <?php
-                  if ($syscat['syscategory_id'] == 3) {
-                    $vehicle = $conn->prepare(DbQuery::getIndividualRegion());
-                    $vehicle->execute(array($region_id));
-                  } else if ($syscat['syscategory_id'] == 1) {
-                    $vehicle = $conn->prepare(DbQuery::getAllRegion());
-                    $vehicle->execute();
-                  } else if ($syscat['syscategory_id'] == 4) {
-                    $vehicle = $conn->prepare(DbQuery::getIndividualRegion());
-                    $vehicle->execute(array($region_id));
-                  }
 
-                  while ($vresult = $vehicle->fetch()) {
-                  ?>
-                <option value="<?php echo $vresult['id'] ?>" <?php if (!(strcmp($vresult['id'], $e_result['region_id']))) {
-                                                                echo "selected=\"selected\"";
-                                                              } ?>><?php echo $vresult['name'] ?>
-                </option>
-              <?php
-                  }
-              ?>
               </select>
             </div>
           </td>

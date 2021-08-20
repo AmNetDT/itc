@@ -107,19 +107,27 @@ $syscat = $sys->fetch();
                 <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/daily_outlet_manager">
                     Daily Outlet Manager</a></li>
 
-                <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/inventory">
-                    Raise Receivable Item</a></li>
+                <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/mapoutlet">
+                    Map Outlet</a></li>
 
-                <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/inventory">
-                    Post Receivable Item </a></li>
+                <li><a>
+                    Inventory</a>
+                  <ul>
+                    <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/inventory">
+                        Raise Receivable Item</a></li>
 
-                <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/ConfirmReceivableItem">
-                    Confirm Receivable Item </a></li>
+                    <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/inventory">
+                        Post Receivable Item </a></li>
 
-                <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/inventory">
-                    Return Receivable Item </a></li>
-                <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/inventory">
-                    Receivable Item History </a></li>
+                    <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/ConfirmReceivableItem">
+                        Confirm Receivable Item </a></li>
+
+                    <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/inventory">
+                        Return Receivable Item </a></li>
+                    <li class="_mc"><a href="javascript:void(0)" id="filesmanagers/inventory">
+                        Receivable Item History </a></li>
+                  </ul>
+                </li>
                 <li class="_mc">
                   <a href="javascript:void(0)" id="filesmanagers/default_token">
                     Approve Default Token &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="notification_icon" style="padding: 3px 5px;

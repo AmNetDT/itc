@@ -49,7 +49,7 @@
           <?php 
     $sn = 0; 
 		$stm = $conn->prepare(DbQuery::getRepCustomers());
-		$stm->execute(array($id, $dateOfTheWeek));
+		$stm->execute(array($id, $dates));
 		while($stmp = $stm->fetch()){
 		$sn++;
     ?>
