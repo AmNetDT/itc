@@ -1,47 +1,46 @@
 <?php 
 ini_set('max_execution_time', 0);
-	require '../../dbconfig/db.php';
-	require '../../query/users.php';
-	
-	$db   = new db();
-	$conn = $db->connect();
-
-	$employee_id = $_POST['employee_id'];
-	$fname_i_u = $_POST['fname_i_u'];
-    $edcode_u_i = $_POST['edcode_u_i'];
-	$sex_u_i = $_POST['sex_u_i'];
-	$phoneno_u_i = $_POST['phoneno_u_i'];
-	$email_u_i = $_POST['email_u_i'];
-	$region_u_i = $_POST['region_u_i'];
-	$state_u_i = $_POST['state_u_i'];
-	$lga_u_i = $_POST['lga_u_i'];
-	$area_u_i = $_POST['area_u_i'];
-	$depots_u_id = $_POST['depots_u_id'];
-	$distchannel_u_i = $_POST['distchannel_u_i'];
-	$company_u_i = $_POST['company_u_i'];
-	$phonefacode_u_i = $_POST['phonefacode_u_i'];
-	$bikefacode_u_i = $_POST['bikefacode_u_i'];
-	$phoneimie_u_i = $_POST['phoneimie_u_i'];
-	$devicebrands_u_i = $_POST['devicebrands_u_i'];
-	$syscat_u_i = $_POST['syscat_u_i'];
-	$username_u_i = $_POST['username_u_i'];
-	$password_u_i = $_POST['password_u_i'];
-	$depotwaiver_u_i = $_POST['depotwaiver_u_i'];
-	$activate_u_i = $_POST['activate_u_i'];
+require '../../dbconfig/db.php';
+require '../../query/users.php';
 
 
+$db   = new db();
+$conn = $db->connect();
 
-		
+$routeid = $_POST['routeid'];
+$monday = $_POST['monday'];
+$tuesday = $_POST['tuesday'];
+$wednesday = $_POST['wednesday'];
+$thusday = $_POST['thusday'];
+$friday = $_POST['friday'];
+$saturday = $_POST['saturday'];
+$sunday = $_POST['sunday'];
+$map_ouelt_id = $_POST['map_ouelt_id'];
+$user_id = $_POST['id'];
 
-	$stm = $conn->prepare (DbQuery::usersInfoUpdates());
-	$stm->execute(array($fname_i_u, $edcode_u_i, $sex_u_i, $phoneno_u_i, 
-	$email_u_i, $region_u_i, $state_u_i, $lga_u_i, $area_u_i, $depots_u_id, $distchannel_u_i, $company_u_i,
-	$phonefacode_u_i, $bikefacode_u_i, $phoneimie_u_i, $devicebrands_u_i, $syscat_u_i, $username_u_i, $password_u_i, $depotwaiver_u_i, $activate_u_i, $employee_id));
 
-	$json =array(
-		"status"=>200,
-		"msg"=>"Registration Successful"
-	);
+$sys = $conn->prepare(DbQuery::copymapoutletintooutlet());
+$sys->execute(array($map_ouelt_id));
+$lastInsertedId = $sys->fetch();
+$urno = $lastInsertedId['id'];
+$date = date('Y-m-d');
 
-  echo json_encode($json);
+$array = array($monday, $tuesday, $wednesday, $thusday, $friday, $saturday, $sunday);
+$json = "";
+
+foreach ($array as $value) {
+
+	$visit = $conn->prepare(DbQuery::createVisitDays());
+	$visit->execute(array($urno, $routeid, $value, $date));
+
+}
+
+$json = array(
+	"status" => $routeid,
+	"msg" => "Registration Successful"
+);
+
+echo json_encode($json);
+
+
 ?>

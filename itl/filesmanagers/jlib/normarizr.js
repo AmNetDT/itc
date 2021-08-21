@@ -88,6 +88,7 @@ $(document).ready(function() {
         let id = $(this).attr("id");
         let username = $(this).attr("lang");
 
+
         if (!ajaxLoadingOutletUpdatePermission) {
 
             ajaxLoadingOutletUpdatePermission = true;
@@ -202,19 +203,19 @@ $(document).ready(function() {
 
 
 $(document).on('click', '.sys_mapoutlet', function() {
+    
         $("#loader_httpFeed").show();
-        let user = $(this).attr("lang");
-        let region = $(this).attr("id");
+        let fullname = $(this).attr("lang");
+        let id = $(this).attr("id");
+        let userid = $(this).attr("eng");
 
         if (!ajaxLoadingUsersEdit) {
 
             ajaxLoadingUsersEdit = true;
 
             let req = {
-                region: region,
-                user: user,
-                outletname: outletname,
-                
+                id: id,
+                userid: userid
             }
 
             $.ajax({
@@ -225,7 +226,7 @@ $(document).on('click', '.sys_mapoutlet', function() {
                 success: function(msg) {
                     $("#loader_httpFeed").hide();
                     new top.PopLayer({
-                        "title": `Map Outlet -> ${user.toUpperCase()}`,
+                        "title": `Map Outlet -> ${fullname.toUpperCase()}`,
                         "content": msg
                     });
                     ajaxLoadingUsersEdit = false;
@@ -1597,6 +1598,30 @@ $(document).on('click', '.sys_mapoutlet', function() {
                 if (xhr.status == 404) {
                     $("#loader_httpFeed").hide();
                     dalert.alert(xhr);
+                } else {
+                    $("#loader_httpFeed").hide();
+                    dalert.alert("internet is down");
+                }
+            }
+        });
+        return false;
+    })
+
+        $(document).on('click', '.savemapoutlet', function() {
+        $("#loader_httpFeed").show();
+        $.ajax({
+            type: "POST",
+            url: "filesmanagers/mapoutlet/editserver.php",
+            data: $('.map_outlet_Serialis').serialize(),
+            dataType: "json",
+            success: function(msg) {
+               alert(msg.status)
+               $("#loader_httpFeed").hide();
+            },
+            error: function(xhr) {
+                if (xhr.status == 404) {
+                    $("#loader_httpFeed").hide();
+                    dalert.alert("internet connection working");
                 } else {
                     $("#loader_httpFeed").hide();
                     dalert.alert("internet is down");

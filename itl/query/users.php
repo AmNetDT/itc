@@ -206,18 +206,22 @@ and a.id = ?
 	}
 
 		public static function MapOutletsysAdminList(){
-			$init = "select b.id, b.outletname, b.contactname, b.contactphone, b.region_id, d.name as region, c.name as depot , b.latitude, b.longitude, b.user_id
-			from  map_outlet b, depot c, region d
+			$init = "select b.id, e.fullname, b.outletname, b.contactname, b.region_id, e.staffcode,
+			b.contactphone, d.name as region, c.name as depot , b.latitude, b.longitude, b.user_id, e.id as userid
+			from  map_outlet b, depot c, region d, users e
 			where b.depot_id = c.id
+			and b.user_id = e.id
 			and b.region_id = d.id
 			and b.status = '1'";
 			return $init;
 		}
 
 		public static function MapOutletsysMonitorList(){
-			$init = "select b.id, b.outletname, b.contactname, b.region_id, b.contactphone, d.name as region, c.name as depot , b.latitude, b.longitude, b.user_id
-			from  map_outlet b, depot c, region d
+			$init = "select b.id, e.fullname, b.outletname, b.contactname, b.region_id, e.staffcode,
+			b.contactphone, d.name as region, c.name as depot , b.latitude, b.longitude, b.user_id, e.id as userid
+			from  map_outlet b, depot c, region d, users e
 			where b.depot_id = c.id
+			and b.user_id = e.id
 			and b.region_id = d.id
 			and b.region_id = ?
 			and b.status = '1'";
@@ -894,6 +898,26 @@ and b.times <> '00:00:00'";
 		and b.id = ?";
 		return $init;
 	}
+
+	public static function copymapoutletintooutlet()
+	{
+		$init = " 
+		insert into outlets (outletclass_id, outletlanguage_id, outlettype_id, outletname, outletaddress) 
+		(select outletclass_id, outletlanguage_id, outlettype_id, outletname, outletaddress, contactname, contactphone, latitude, longitude    
+		from map_outlet where id = ?
+		) returning id";
+		return $init;
+	}
+
+	public static function createVisitDays(){
+		$init = " 
+		INSERT INTO user_outlet_visit_cycle (urno, route_id, visit_days, entry_date) VALUES (?, ?, ?, ?)";
+		return $init;
+	}
+
+	
+
+	
 
 }
 	
