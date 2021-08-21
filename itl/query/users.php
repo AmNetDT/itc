@@ -902,7 +902,7 @@ and b.times <> '00:00:00'";
 	public static function copymapoutletintooutlet()
 	{
 		$init = " 
-		insert into outlets (outletclass_id, outletlanguage_id, outlettype_id, outletname, outletaddress) 
+		insert into outlets (outletclass_id, outletlanguage_id, outlettype_id, outletname, outletaddress, contactname, contactphone, latitude, longitude) 
 		(select outletclass_id, outletlanguage_id, outlettype_id, outletname, outletaddress, contactname, contactphone, latitude, longitude    
 		from map_outlet where id = ?
 		) returning id";
@@ -915,8 +915,14 @@ and b.times <> '00:00:00'";
 		return $init;
 	}
 
-	
 
+	public static function deleteMapOut()
+	{
+		$init = "
+		delete from map_outlet where id = ?
+		";
+		return $init; 
+	}
 	
 
 }

@@ -56,22 +56,22 @@ $id = $_POST['userid'];
             <table style="width:200px; margin:20px;">
               <tr>
                 <td style="width:100px">
-                  <input type="checkbox" name="monday" id='monday' value="Monday">Monday
+                  <input type="checkbox" name="monday" id='monday' value="Mon">Monday
                 </td>
                 <td style="width:100px">
-                  <input type="checkbox" name="tuesday" id="tuesday" value="Tuesday">Tuesday
+                  <input type="checkbox" name="tuesday" id="tuesday" value="Tue">Tuesday
                 </td>
               </tr>
               <tr>
-                <td><input type="checkbox" name="wednesday" id="wednesday" value="Wednesday">Wednesday</td>
-                <td><input type="checkbox" name="thusday" id="thusday" value="Thusday">Thusday</td>
+                <td><input type="checkbox" name="wednesday" id="wednesday" value="Wed">Wednesday</td>
+                <td><input type="checkbox" name="thusday" id="thusday" value="Thus">Thusday</td>
               </tr>
               <tr>
-                <td><input type="checkbox" name="friday" id="friday" value="Friday">Friday</td>
-                <td><input type="checkbox" name="saturday" id="saturday" value="Saturday">Saturday</td>
+                <td><input type="checkbox" name="friday" id="friday" value="Fri">Friday</td>
+                <td><input type="checkbox" name="saturday" id="saturday" value="Sat">Saturday</td>
               </tr>
               <tr>
-                <td><input type="checkbox" name="sunday" id="sunday" value="Sunday">Sunday</td>
+                <td><input type="checkbox" name="sunday" id="sunday" value="Sun">Sunday</td>
               </tr>
             </table>
           </fieldset>

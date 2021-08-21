@@ -202,48 +202,6 @@ $(document).ready(function() {
     })
 
 
-$(document).on('click', '.sys_mapoutlet', function() {
-    
-        $("#loader_httpFeed").show();
-        let fullname = $(this).attr("lang");
-        let id = $(this).attr("id");
-        let userid = $(this).attr("eng");
-
-        if (!ajaxLoadingUsersEdit) {
-
-            ajaxLoadingUsersEdit = true;
-
-            let req = {
-                id: id,
-                userid: userid
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "filesmanagers/mapoutlet/editusers",
-                data: req,
-                cache: false,
-                success: function(msg) {
-                    $("#loader_httpFeed").hide();
-                    new top.PopLayer({
-                        "title": `Map Outlet -> ${fullname.toUpperCase()}`,
-                        "content": msg
-                    });
-                    ajaxLoadingUsersEdit = false;
-                },
-                error: function(xhr) {
-                    if (xhr.status == 404) {
-                        $("#loader_httpFeed").hide();
-                        dalert.alert("internet connection working");
-                    } else {
-                        $("#loader_httpFeed").hide();
-                        dalert.alert("internet is down");
-                    }
-                }
-            });
-        }
-    })
-
     $(document).on('click', '.sys_regts', function() {
         $("#loader_httpFeed").show();
         if (!ajaxLoadingUsers) {
@@ -1607,6 +1565,49 @@ $(document).on('click', '.sys_mapoutlet', function() {
         return false;
     })
 
+$(document).on('click', '.sys_mapoutlet', function() {
+    
+        $("#loader_httpFeed").show();
+        let fullname = $(this).attr("lang");
+        let id = $(this).attr("id");
+        let userid = $(this).attr("eng");
+
+        if (!ajaxLoadingUsersEdit) {
+
+            ajaxLoadingUsersEdit = true;
+
+            let req = {
+                id: id,
+                userid: userid
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "filesmanagers/mapoutlet/editusers",
+                data: req,
+                cache: false,
+                success: function(msg) {
+                    $("#loader_httpFeed").hide();
+                    new top.PopLayer({
+                        "title": `Map Outlet -> ${fullname.toUpperCase()}`,
+                        "content": msg
+                    });
+                    ajaxLoadingUsersEdit = false;
+                },
+                error: function(xhr) {
+                    if (xhr.status == 404) {
+                        $("#loader_httpFeed").hide();
+                        dalert.alert("internet connection working");
+                    } else {
+                        $("#loader_httpFeed").hide();
+                        dalert.alert("internet is down");
+                    }
+                }
+            });
+        }
+    })
+
+
         $(document).on('click', '.savemapoutlet', function() {
         $("#loader_httpFeed").show();
         $.ajax({
@@ -1615,8 +1616,7 @@ $(document).on('click', '.sys_mapoutlet', function() {
             data: $('.map_outlet_Serialis').serialize(),
             dataType: "json",
             success: function(msg) {
-               alert(msg.status)
-               $("#loader_httpFeed").hide();
+               $(".mapoutletdeleter"+msg.deleter).fadeOut()
             },
             error: function(xhr) {
                 if (xhr.status == 404) {

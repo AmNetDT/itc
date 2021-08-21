@@ -61,7 +61,7 @@ $depots_id = $syscat['depots_id'];
       $sn++;
     ?>
 
-      <tr eng="<?php echo $stmp['userid'] ?>" id="<?php echo $stmp['id'] ?>" class="rowOdd sys_mapoutlet rst<?php echo $stmp['id'] ?>" lang="<?php echo $stmp['fullname'] . " (" . $stmp['staffcode'] . ")" ?>">
+      <tr eng="<?php echo $stmp['userid'] ?>" id="<?php echo $stmp['id'] ?>" class="rowOdd sys_mapoutlet mapoutletdeleter<?php echo $stmp['id'] ?>" lang="<?php echo $stmp['fullname'] . " (" . $stmp['staffcode'] . ")" ?>">
         <td width="135"><?php echo $sn ?></td>
         <td width="235"><?php echo $stmp['outletname'] ?></td>
         <td width="696"><?php echo $stmp['contactname'] ?></td>
