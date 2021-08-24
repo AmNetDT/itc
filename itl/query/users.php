@@ -203,6 +203,7 @@ and a.id = ?
 		from users
 		where id = ?";
 		return $init; 
+		
 	}
 
 		public static function MapOutletsysAdminList(){
@@ -376,22 +377,32 @@ and a.id = ?
 
 	public static function getState()
 	{
+		// $init = " 
+		// select id, name from state where regions_id = ? ";
+		// return $init;
 		$init = " 
-		select id, name from state where regions_id = ? ";
+		select id, name from state order by regions_id";
 		return $init;
 	}
 
 	public static function getLga()
 	{
+		// $init = " 
+		// select id, name from lga where state_id = ? ";
+		// return $init;
 		$init = " 
-		select id, name from lga where state_id = ? ";
+		select id, name from lga order by state_id";
 		return $init;
 	}
 
 	public static function getArea()
 	{
+		// $init = " 
+		// select id, name from area where lga_id = ? ";
+		// return $init;
+
 		$init = " 
-		select id, name from area where lga_id = ? ";
+		select id, name from area";
 		return $init;
 	}
 

@@ -225,8 +225,8 @@ $e_result = $estm->fetch();
                         <?php
 
                         $vehicleb = $conn->prepare(DbQuery::getState());
-                        $vehicleb->execute(array($e_result['region_id']));
-
+                        // $vehicleb->execute(array($e_result['region_id']));
+                        $vehicleb->execute(array());
                         while ($vresultb = $vehicleb->fetch()) {
                         ?>
                       <option value="<?php echo $vresultb['id'] ?>" <?php if (!(strcmp($vresultb['id'], $e_result['state_id']))) {
@@ -251,8 +251,8 @@ $e_result = $estm->fetch();
                         <?php
 
                         $vehiclebb = $conn->prepare(DbQuery::getLga());
-                        $vehiclebb->execute(array($e_result['state_id']));
-
+                        // $vehiclebb->execute(array($e_result['state_id']));
+                        $vehiclebb->execute(array());
                         while ($vresultbb = $vehiclebb->fetch()) {
                         ?>
                       <option value="<?php echo $vresultbb['id'] ?>" <?php if (!(strcmp($vresultbb['id'], $e_result['lga_id']))) {
@@ -277,8 +277,8 @@ $e_result = $estm->fetch();
                         <?php
 
                         $areaId = $conn->prepare(DbQuery::getArea());
-                        $areaId->execute(array($e_result['lga_id']));
-
+                        // $areaId->execute(array($e_result['lga_id']));
+                        $areaId->execute(array());
                         while ($getAreaId = $areaId->fetch()) {
                         ?>
                       <option value="<?php echo $getAreaId['id'] ?>" <?php if (!(strcmp($getAreaId['id'], $e_result['area_id']))) {
@@ -370,7 +370,7 @@ $e_result = $estm->fetch();
                 <td>
                   <div id="formInputs">
                     <select name="company_u_i" id="company_u_i">
-                      <option value="1">Great Brands Nigeria Limited</option>
+                      <option value="1">Company</option>
                     </select>
                   </div>
                 </td>
@@ -473,4 +473,5 @@ $e_result = $estm->fetch();
     </div>
 </body>
 </form>
+
 </html>

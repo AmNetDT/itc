@@ -1615,7 +1615,8 @@ $(document).on('click', '.sys_mapoutlet', function() {
             url: "filesmanagers/mapoutlet/editserver.php",
             data: $('.map_outlet_Serialis').serialize(),
             dataType: "json",
-            success: function(msg) {
+            success: function(msg) {                
+               $("#loader_httpFeed").hide();
                $(".mapoutletdeleter"+msg.deleter).fadeOut()
             },
             error: function(xhr) {
