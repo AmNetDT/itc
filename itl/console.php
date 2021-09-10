@@ -56,6 +56,8 @@ $syscat = $sys->fetch();
 
     })
   </script>
+  <link href="./main.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -64,13 +66,13 @@ $syscat = $sys->fetch();
 
     <div id="header_parent_panels"></div>
 
-
-
     <div id="sidebar">
 
       <div id="apMenu"><?php echo $syscat['name'] ?></div>
       <input type="hidden" id="regionID_008678" value="<?php echo $syscat['region_id'] ?>" />
+     
       <div id="wrapper">
+
         <div class="tree">
 
 
@@ -154,10 +156,12 @@ $syscat = $sys->fetch();
     </div>
 
     <div id="contentbar_footers">
-      <div style="margin:auto; margin-top:20px; width:150px; display:none" id="loader_httpFeed"><img src="customerManagement/image/loading.gif" /></div>
+      <div style="margin:auto; margin-top:20px; 
+      width:150px; display:none" id="loader_httpFeed"><img src="customerManagement/image/loading.gif" /></div>
     </div>
 
   </div>
-</body>
 
+  <script type="text/javascript" src="./assets/scripts/main.js"></script>
+</body>
 </html>

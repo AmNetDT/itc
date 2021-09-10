@@ -1,6 +1,6 @@
 
 .tree a{
-	color: #4968A1;
+	color: #b00020;
 	cursor:pointer;
 	 font-family: sans-serif;
     font-size: 12px;
@@ -23,7 +23,7 @@
     line-height: 25px;
 }
 .tree > ul > li > a {
-    color: #4968A1;
+    color: #b00020;
     display: block;
     font-weight: normal;
     position: relative;
@@ -48,7 +48,7 @@
     background-position: 0 center;
 }
 .tree ul li ul {
-    border-left: 1px dotted #4968A1;
+    border-left: 1px dotted #b00020;
     display: none;
     margin: 0 0 0 12px;
     overflow: hidden;
@@ -58,7 +58,7 @@
     position: relative;
 }
 .tree ul li ul li:before {
-    border-bottom: 1px dotted #4968A1;
+    border-bottom: 1px dotted #b00020;
     content: "";
     left: -20px;
     position: absolute;
